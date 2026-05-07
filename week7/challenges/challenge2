@@ -1,0 +1,40 @@
+import csv
+
+def main():
+    # Dictionary to store counts: {language: {problem: count}}
+    counts = {}
+
+    try:
+        with open("favorites.csv", "r") as file:
+            reader = csv.DictReader(file)
+            
+            for row in reader:
+                language = row["language"]
+                problem = row["problem"]
+
+                # If language not in dictionary, add it
+                if language not in counts:
+                    counts[language] = {}
+
+                # If problem not in that language's dict, initialize to 1, else increment
+                if problem not in counts[language]:
+                    counts[language][problem] = 1
+                else:
+                    counts[language][problem] += 1
+
+        # Print the report table
+        print(f"\n{'Language':<15} | {'Most Common Problem':<25}")
+        print("-" * 45)
+
+        for language in sorted(counts):
+            # Find the problem with the highest count for this language
+            # key=counts[language].get returns the problem name with the max value
+            most_common = max(counts[language], key=counts[language].get)
+            
+            print(f"{language:<15} | {most_common:<25}")
+
+    except FileNotFoundError:
+        print("Error: favorites.csv not found.")
+
+if __name__ == "__main__":
+    main()
