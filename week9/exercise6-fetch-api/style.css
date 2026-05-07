@@ -1,0 +1,66 @@
+/* style.css */
+body {
+    font-family: system-ui, sans-serif;
+    line-height: 1.6;
+    background: #f4f7f6;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: #1a3a5c;
+    color: white;
+    padding: 2rem;
+    text-align: center;
+}
+
+main {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+button {
+    padding: 0.8rem 1.5rem;
+    cursor: pointer;
+    background: #1a3a5c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+#posts-list {
+    list-style: none;
+    padding: 0;
+}
+
+.post-card {
+    background: white;
+    margin-bottom: 1rem;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.post-card h3 {
+    margin-top: 0;
+    color: #1a3a5c;
+    text-transform: capitalize;
+}
+
+.error {
+    color: #e74c3c;
+    text-align: center;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
+}
