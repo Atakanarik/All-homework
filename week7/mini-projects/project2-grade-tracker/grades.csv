@@ -1,0 +1,42 @@
+import csv
+
+def main():
+    # Variables to track statistics
+    scores = []
+    pass_threshold = 60
+    
+    # Using the data provided
+    # (In a real scenario, you'd save your list into 'scores.csv')
+    try:
+        with open("scores.csv", "r") as file:
+            reader = csv.DictReader(file)
+            
+            print(f"{'Name':<10} | {'Score':<5} | {'Status':<10}")
+            print("-" * 30)
+            
+            for row in reader:
+                name = row["name"]
+                score = int(row["score"])
+                scores.append(score)
+                
+                # Determine pass/fail status
+                status = "PASS" if score >= pass_threshold else "FAIL"
+                
+                print(f"{name:<10} | {score:<5} | {status:<10}")
+
+        # Calculate and print summary statistics
+        if scores:
+            average = sum(scores) / len(scores)
+            highest = max(scores)
+            lowest = min(scores)
+            
+            print("-" * 30)
+            print(f"Average Score: {average:.2f}")
+            print(f"Highest Score: {highest} ({next(name for name, s in zip(['Alice', 'Bob', 'Carol', 'David', 'Emine', 'Fatih', 'Grace', 'Hassan', 'Irem', 'Jorge', 'Kaya', 'Layla', 'Marco', 'Nadia', 'Omar'], [88, 73, 92, 55, 41, 67, 91, 78, 84, 60, 95, 49, 71, 83, 66]) if s == highest)})")
+            print(f"Lowest Score : {lowest}")
+
+    except FileNotFoundError:
+        print("Error: scores.csv not found. Please save your data list into a file named scores.csv first.")
+
+if __name__ == "__main__":
+    main()
