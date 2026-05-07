@@ -1,0 +1,148 @@
+// ============================================================
+// TASK 1 — Console Warmup
+// ============================================================
+
+// 1a: Change the main title text
+const mainTitle = document.getElementById('main-title');
+mainTitle.textContent = "DOM Mastery 🚀";
+
+// 1b: Select all cards and log how many are on the page
+const cards = document.querySelectorAll('.card');
+console.log(`Total cards found: ${cards.length}`);
+
+// 1c: Change the target box background color
+const targetBox = document.getElementById('target-box');
+targetBox.style.backgroundColor = "#e8a838";
+targetBox.style.color = "white";
+
+
+// ============================================================
+// TASK 2 — Click Counter
+// ============================================================
+
+let count = 0;
+const countDisplay = document.querySelector('#count-display');
+const btnDec = document.querySelector('#btn-decrement');
+const btnRes = document.querySelector('#btn-reset');
+const btnInc = document.querySelector('#btn-increment');
+
+function updateCountDisplay() {
+    countDisplay.textContent = count;
+    
+    // Add CSS classes for color based on the value
+    if (count === 0) {
+        countDisplay.classList.add('zero');
+        countDisplay.classList.remove('high');
+    } else if (count > 5) {
+        countDisplay.classList.add('high');
+        countDisplay.classList.remove('zero');
+    } else {
+        countDisplay.classList.remove('zero', 'high');
+    }
+}
+
+btnInc.addEventListener('click', () => {
+    count++;
+    updateCountDisplay();
+});
+
+btnDec.addEventListener('click', () => {
+    if (count > 0) { // Prevents count from going into negative numbers
+        count--;
+        updateCountDisplay();
+    }
+});
+
+btnRes.addEventListener('click', () => {
+    count = 0;
+    updateCountDisplay();
+});
+
+
+// ============================================================
+// TASK 3 — Dynamic List Builder
+// ============================================================
+
+const listInput = document.querySelector('#list-input');
+const btnAdd = document.querySelector('#btn-add-item');
+const dynamicList = document.querySelector('#dynamic-list');
+
+btnAdd.addEventListener('click', () => {
+    const text = listInput.value.trim();
+    
+    if (text === "") {
+        // Trigger the shake animation if the input is empty
+        listInput.classList.add('shake');
+        setTimeout(() => listInput.classList.remove('shake'), 300);
+        return;
+    }
+
+    // Create a new list item with a delete button
+    const li = document.createElement('li');
+    li.innerHTML = `${text} <button class="delete-btn">×</button>`;
+    
+    dynamicList.appendChild(li);
+    listInput.value = "";
+    listInput.focus();
+});
+
+// Event Delegation: Handle delete buttons for current and future items
+dynamicList.addEventListener('click', (event) => {
+    if (event.target.classList.contains('delete-btn')) {
+        event.target.parentElement.remove();
+    }
+});
+
+
+// ============================================================
+// TASK 4 — Show / Hide Toggle
+// ============================================================
+
+const toggleBtn = document.querySelector('#btn-toggle');
+const detailsDiv = document.querySelector('.details');
+
+toggleBtn.addEventListener('click', () => {
+    const isHidden = detailsDiv.classList.toggle('hidden');
+    toggleBtn.textContent = isHidden ? "Show Details" : "Hide Details";
+});
+
+
+// ============================================================
+// TASK 5 — Color Mixer
+// ============================================================
+
+const sliderR = document.querySelector('#slider-r');
+const sliderG = document.querySelector('#slider-g');
+const sliderB = document.querySelector('#slider-b');
+const colorPreview = document.querySelector('#color-preview');
+const hexDisplay = document.querySelector('#hex-display');
+
+function updateColor() {
+    const r = sliderR.value;
+    const g = sliderG.value;
+    const b = sliderB.value;
+
+    // Update labels in the UI
+    document.getElementById('val-r').textContent = r;
+    document.getElementById('val-g').textContent = g;
+    document.getElementById('val-b').textContent = b;
+
+    // Update the visual preview background
+    colorPreview.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+
+    // Convert values to Hex format
+    const hex = "#" + [r, g, b].map(x => {
+        const h = parseInt(x).toString(16);
+        return h.length === 1 ? '0' + h : h;
+    }).join('');
+    
+    hexDisplay.textContent = hex.toUpperCase();
+}
+
+// Add 'input' listeners to all sliders to trigger update on every move
+[sliderR, sliderG, sliderB].forEach(slider => {
+    slider.addEventListener('input', updateColor);
+});
+
+// Initial call to ensure colors match slider positions on load
+updateColor();
