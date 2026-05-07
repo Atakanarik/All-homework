@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <div class="container text-center p-5">
+        <h1 class="text-danger">Error</h1>
+        <p class="lead">{{ message }}</p>
+        <hr>
+        <img alt="Error Graphic" src="/static/error.png" class="img-fluid mb-3" style="max-width: 200px;">
+        <br>
+        <a href="/" class="btn btn-secondary">Try Again</a>
+    </div>
+{% endblock %}
