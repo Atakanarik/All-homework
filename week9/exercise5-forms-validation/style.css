@@ -1,0 +1,145 @@
+/**
+ * Exercise 5: Forms & Validation
+ * ================================
+ */
+
+const form = document.querySelector('#registration-form');
+const submitBtn = document.querySelector('#submit-btn');
+
+// ============================================================
+// HELPER: Show or clear an error on a field
+// ============================================================
+function showError(inputId, message) {
+    const input = document.getElementById(inputId);
+    const errorSpan = document.getElementById(`error-${inputId}`);
+    if (input && errorSpan) {
+        input.classList.add('invalid');
+        input.classList.remove('valid');
+        errorSpan.textContent = message;
+    }
+}
+
+function clearError(inputId) {
+    const input = document.getElementById(inputId);
+    const errorSpan = document.getElementById(`error-${inputId}`);
+    if (input && errorSpan) {
+        input.classList.remove('invalid');
+        input.classList.add('valid');
+        errorSpan.textContent = "";
+    }
+}
+
+// ============================================================
+// TASK 2: Individual Field Validators
+// ============================================================
+
+function validateUsername() {
+    const val = document.getElementById('username').value.trim();
+    if (val.length < 3) {
+        showError('username', 'Username must be at least 3 characters.');
+        return false;
+    }
+    clearError('username');
+    return true;
+}
+
+function validateEmail() {
+    const val = document.getElementById('email').value.trim();
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regex.test(val)) {
+        showError('email', 'Please enter a valid email address.');
+        return false;
+    }
+    clearError('email');
+    return true;
+}
+
+function validatePassword() {
+    const val = document.getElementById('password').value;
+    const hasDigit = /\d/.test(val);
+    
+    updatePasswordStrength(val);
+
+    if (val.length < 8 || !hasDigit) {
+        showError('password', 'Password needs 8+ characters and at least one digit.');
+        return false;
+    }
+    clearError('password');
+    return true;
+}
+
+function validateConfirmPassword() {
+    const pass = document.getElementById('password').value;
+    const confirm = document.getElementById('confirm-password').value;
+    if (confirm !== pass || confirm === "") {
+        showError('confirm-password', 'Passwords do not match.');
+        return false;
+    }
+    clearError('confirm-password');
+    return true;
+}
+
+function validateBirthDate() {
+    const val = document.getElementById('birth-date').value;
+    if (!val) {
+        showError('birth-date', 'Birth date is required.');
+        return false;
+    }
+    const age = new Date().getFullYear() - new Date(val).getFullYear();
+    if (age < 18 || age > 120) {
+        showError('birth-date', 'You must be between 18 and 120 years old.');
+        return false;
+    }
+    clearError('birth-date');
+    return true;
+}
+
+function validateCountry() {
+    const val = document.getElementById('country').value;
+    if (val === "") {
+        showError('country', 'Please select your country.');
+        return false;
+    }
+    clearError('country');
+    return true;
+}
+
+function validateTerms() {
+    const checkbox = document.getElementById('terms');
+    if (!checkbox.checked) {
+        showError('terms', 'You must accept the terms.');
+        return false;
+    }
+    clearError('terms');
+    return true;
+}
+
+// ============================================================
+// TASK 4: Password Strength Indicator
+// ============================================================
+function updatePasswordStrength(password) {
+    let strengthEl = document.getElementById('password-strength');
+    
+    // If element doesn't exist, we create it dynamically below the password input
+    if (!strengthEl) {
+        strengthEl = document.createElement('div');
+        strengthEl.id = 'password-strength';
+        document.getElementById('password').parentElement.appendChild(strengthEl);
+    }
+
+    let strength = "Weak";
+    strengthEl.className = "strength-bar weak";
+
+    if (password.length >= 12 && /\d/.test(password) && /[A-Z]/.test(password)) {
+        strength = "Strong";
+        strengthEl.className = "strength-bar strong";
+    } else if (password.length >= 8) {
+        strength = "Fair";
+        strengthEl.className = "strength-bar fair";
+    }
+    
+    strengthEl.textContent = `Strength: ${strength}`;
+}
+
+// ============================================================
+// TASK
