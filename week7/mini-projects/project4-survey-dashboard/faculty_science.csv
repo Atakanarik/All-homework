@@ -1,0 +1,61 @@
+import csv
+
+# ── Step 1: Initialize Analysis Variables ─────────────────────────────────────
+# We use dictionaries to group data by Faculty
+faculty_data = {}  # {faculty_name: [list of satisfaction scores]}
+tool_popularity = {} # {tool_name: total_votes}
+total_responses = 0
+
+# ── Step 2: Read the Science Dataset ──────────────────────────────────────────
+# Save your new data (S001 to S015) as science_feedback.csv
+try:
+    with open("science_feedback.csv", "r") as file:
+        reader = csv.DictReader(file)
+        
+        for row in reader:
+            faculty = row["faculty"]
+            score = int(row["satisfaction"])
+            tool = row["favourite_tool"]
+            
+            # 1. Track global responses
+            total_responses += 1
+            
+            # 2. Group scores by Faculty
+            if faculty not in faculty_data:
+                faculty_data[faculty] = []
+            faculty_data[faculty].append(score)
+            
+            # 3. Count tool popularity
+            tool_popularity[tool] = tool_popularity.get(tool, 0) + 1
+
+except FileNotFoundError:
+    print("Error: science_feedback.csv not found.")
+    exit(1)
+
+# ── Step 3: Print the Analysis Report ─────────────────────────────────────────
+print("\n=== CS50 Faculty Analysis Report ===")
+print(f"Total Responses Processed: {total_responses}")
+
+# Calculate Faculty Averages
+print("\n--- Average Satisfaction by Faculty ---")
+for faculty in sorted(faculty_data):
+    scores = faculty_data[faculty]
+    avg = sum(scores) / len(scores)
+    # Using :.2f to show 2 decimal places
+    print(f"{faculty:<10}: {avg:.2f} / 5.0")
+
+# Rank Tools
+print("\n--- Most Popular Tools ---")
+# Sorting the tool dictionary by value (highest first)
+sorted_tools = sorted(tool_popularity, key=tool_popularity.get, reverse=True)
+for tool in sorted_tools:
+    print(f"  {tool:<8}: {tool_popularity[tool]} votes")
+
+# ── Step 4: Final Sentiment Check ─────────────────────────────────────────────
+# Search comments for "recommended" or "loved"
+with open("science_feedback.csv", "r") as file:
+    file.seek(0)
+    reader = csv.DictReader(file)
+    positive_count = sum(1 for row in reader if any(word in row["comments"].lower() for word in ["loved", "recommend", "excellent"]))
+    
+    print(f"\nPositive Sentiment Rate: {(positive_count / total_responses) * 100:.1f}%")
