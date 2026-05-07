@@ -1,0 +1,49 @@
+import csv
+
+def main():
+    # Storage for statistics
+    room_counts = {}       # {room_name: number_of_events}
+    event_type_stats = {}  # {type: total_attendees}
+    total_attendees = 0
+    event_count = 0
+
+    try:
+        # Step 1: Process the event data
+        with open("events.csv", "r") as file:
+            reader = csv.DictReader(file)
+            
+            for row in reader:
+                room = row["room"]
+                event_type = row["event_type"]
+                attendees = int(row["attendees"])
+                
+                # Track room usage
+                room_counts[room] = room_counts.get(room, 0) + 1
+                
+                # Track attendees per event type
+                event_type_stats[event_type] = event_type_stats.get(event_type, 0) + attendees
+                
+                # Update totals
+                total_attendees += attendees
+                event_count += 1
+
+        # Step 2: Generate the Report
+        print("\n=== Event Management Report ===")
+        print(f"Total Events: {event_count}")
+        print(f"Total Attendees: {total_attendees}")
+        print(f"Average Attendance: {total_attendees / event_count:.1f}")
+
+        print("\n--- Room Usage (Busiest First) ---")
+        # Sort rooms by number of events (highest first)
+        for room in sorted(room_counts, key=room_counts.get, reverse=True):
+            print(f"{room:<10}: {room_counts[room]} events")
+
+        print("\n--- Attendance by Event Type ---")
+        for e_type, total in sorted(event_type_stats.items()):
+            print(f"{e_type:<10}: {total} people total")
+
+    except FileNotFoundError:
+        print("Error: 'events.csv' not found. Save the data you provided into that file first.")
+
+if __name__ == "__main__":
+    main()
