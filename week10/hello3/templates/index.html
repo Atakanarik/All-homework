@@ -1,0 +1,12 @@
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+@app.route("/")
+def index():
+    # Looks for 'name' in the URL (e.g., /?name=world)
+    # If no name is provided, it defaults to 'world'
+    name = request.args.get("name", "world")
+    
+    # Passes the 'name' variable to the HTML as 'placeholder'
+    return render_template("index.html", placeholder=name)
