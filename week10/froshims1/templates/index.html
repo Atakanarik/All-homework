@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <h1>Register</h1>
+    <form action="/register" method="post">
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control" name="name" placeholder="Name" type="text">
+        </div>
+        <div class="mb-3">
+            <select class="form-select" name="sport">
+                <option disabled selected value="">Sport</option>
+                <option value="Basketball">Basketball</option>
+                <option value="Football">Football</option>
+                <option value="Soccer">Soccer</option>
+                <option value="Ultimate Frisbee">Ultimate Frisbee</option>
+                <option value="Volleyball">Volleyball</option>
+            </select>
+        </div>
+        <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+{% endblock %}
