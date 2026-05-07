@@ -1,0 +1,65 @@
+<div class="form-group">
+        <label for="username">Username *</label>
+        <input type="text" id="username" name="username" placeholder="janesmith123" required>
+        <span class="error-msg" id="error-username"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" name="email" placeholder="jane@example.com" required>
+        <span class="error-msg" id="error-email"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password *</label>
+        <input type="password" id="password" name="password" placeholder="Min. 8 characters" required>
+        <span class="error-msg" id="error-password"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="confirm-password">Confirm Password *</label>
+        <input type="password" id="confirm-password" name="confirm-password" required>
+        <span class="error-msg" id="error-confirm-password"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="birth-date">Birth Date *</label>
+        <input type="date" id="birth-date" name="birth-date" required>
+        <span class="error-msg" id="error-birth-date"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="country">Country *</label>
+        <select id="country" name="country" required>
+          <option value="">Select a country...</option>
+          <option value="US">United States</option>
+          <option value="UK">United Kingdom</option>
+          <option value="TR">Turkey</option>
+          <option value="DE">Germany</option>
+          <option value="CA">Canada</option>
+        </select>
+        <span class="error-msg" id="error-country"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="bio">Bio (Optional)</label>
+        <textarea id="bio" name="bio" rows="3" placeholder="Tell us about yourself..."></textarea>
+        <span class="error-msg" id="error-bio"></span>
+      </div>
+
+      <div class="form-group checkbox-group">
+        <input type="checkbox" id="terms" name="terms" required>
+        <label for="terms">I agree to the Terms & Conditions *</label>
+        <span class="error-msg" id="error-terms"></span>
+      </div>
+
+      <div class="form-group">
+        <p>Subscribe to Newsletter?</p>
+        <div class="radio-options">
+          <input type="radio" id="news-yes" name="newsletter" value="yes" checked>
+          <label for="news-yes">Yes</label>
+          <input type="radio" id="news-no" name="newsletter" value="no">
+          <label for="news-no">No</label>
+        </div>
+        <span class="error-msg" id="error-newsletter"></span>
+      </div>
