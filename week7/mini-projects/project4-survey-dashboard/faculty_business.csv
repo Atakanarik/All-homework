@@ -1,0 +1,58 @@
+import csv
+
+def main():
+    # ── Step 1: Initialize Storage ──────────────────────────────────────────────
+    tool_counts = {}        # {tool: count}
+    faculty_stats = {}      # {faculty: [list of scores]}
+    comments_summary = []   # list of strings for text analysis
+    
+    # ── Step 2: Read and Process the Business Faculty Data ──────────────────────
+    try:
+        # Assuming you save this new list into 'business_feedback.csv'
+        with open("business_feedback.csv", "r") as file:
+            reader = csv.DictReader(file)
+            
+            for row in reader:
+                tool = row["favourite_tool"]
+                faculty = row["faculty"]
+                score = int(row["satisfaction"])
+                comment = row["comments"]
+
+                # Count tool popularity
+                tool_counts[tool] = tool_counts.get(tool, 0) + 1
+                
+                # Group scores by faculty
+                if faculty not in faculty_stats:
+                    faculty_stats[faculty] = []
+                faculty_stats[faculty].append(score)
+                
+                # Collect comments for analysis
+                comments_summary.append(comment.lower())
+
+        # ── Step 3: Generate the Business Analysis Report ───────────────────────
+        print("\n=== Business Faculty Course Analysis ===")
+        
+        # 1. Overall Satisfaction by Faculty
+        for faculty, scores in faculty_stats.items():
+            avg = sum(scores) / len(scores)
+            print(f"Faculty: {faculty:<10} | Avg Satisfaction: {avg:.2f} / 5.0")
+
+        # 2. Tool Ranking (Most popular first)
+        print("\nTool Popularity Ranking:")
+        sorted_tools = sorted(tool_counts, key=tool_counts.get, reverse=True)
+        for i, tool in enumerate(sorted_tools, 1):
+            print(f"  {i}. {tool:<8} ({tool_counts[tool]} votes)")
+
+        # 3. Simple Sentiment Analysis
+        # Checking how many times "loved" or "best" appears
+        positive_keywords = ["best", "loved", "excellent", "great"]
+        pos_count = sum(1 for c in comments_summary if any(word in c for word in positive_keywords))
+        
+        print("\n--- Sentiment Highlights ---")
+        print(f"Positive feedback rate: {(pos_count / len(comments_summary)) * 100:.1f}%")
+
+    except FileNotFoundError:
+        print("Error: 'business_feedback.csv' not found. Save your data first!")
+
+if __name__ == "__main__":
+    main()
