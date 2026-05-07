@@ -1,0 +1,137 @@
+// ============================================================
+// TASK 1: Console Warmup & Selecting Elements
+// ============================================================
+
+// 1.1 Log a message to the console
+console.log("JavaScript is connected and ready to manipulate the DOM!");
+
+// 1.2 Change the h1 title text
+const mainTitle = document.getElementById('main-title');
+mainTitle.textContent = "DOM Manipulation Master";
+
+// 1.3 Change background of the target box
+const targetBox = document.getElementById('target-box');
+targetBox.style.backgroundColor = "#e8a838";
+targetBox.style.color = "white";
+
+
+// ============================================================
+// TASK 2: Click Counter
+// ============================================================
+let count = 0;
+const countDisplay = document.getElementById('count-display');
+const btnDec = document.getElementById('btn-decrement');
+const btnRes = document.getElementById('btn-reset');
+const btnInc = document.getElementById('btn-increment');
+
+function updateDisplay() {
+    countDisplay.textContent = count;
+    // Optional: add color logic
+    countDisplay.style.color = count > 0 ? "green" : count < 0 ? "red" : "black";
+}
+
+btnInc.addEventListener('click', () => {
+    count++;
+    updateDisplay();
+});
+
+btnDec.addEventListener('click', () => {
+    count--;
+    updateDisplay();
+});
+
+btnRes.addEventListener('click', () => {
+    count = 0;
+    updateDisplay();
+});
+
+
+// ============================================================
+// TASK 3: Dynamic List Builder
+// ============================================================
+const listInput = document.getElementById('list-input');
+const btnAdd = document.getElementById('btn-add-item');
+const dynamicList = document.getElementById('dynamic-list');
+
+btnAdd.addEventListener('click', () => {
+    const text = listInput.value.trim();
+    
+    if (text !== "") {
+        // Create the <li> element
+        const li = document.createElement('li');
+        li.textContent = text + " ";
+        
+        // Create the delete button
+        const delBtn = document.createElement('button');
+        delBtn.textContent = "×";
+        delBtn.classList.add('delete-btn');
+        
+        // Add delete functionality
+        delBtn.addEventListener('click', () => li.remove());
+        
+        li.appendChild(delBtn);
+        dynamicList.appendChild(li);
+        
+        // Clear input
+        listInput.value = "";
+        listInput.focus();
+    }
+});
+
+
+// ============================================================
+// TASK 4: Show / Hide Toggle
+// ============================================================
+const btnToggle = document.getElementById('btn-toggle');
+const detailsDiv = document.querySelector('.details');
+
+btnToggle.addEventListener('click', () => {
+    const isHidden = detailsDiv.classList.toggle('hidden');
+    btnToggle.textContent = isHidden ? "Show Details" : "Hide Details";
+});
+
+
+// ============================================================
+// TASK 5: RGB Color Mixer
+// ============================================================
+const rSlider = document.getElementById('slider-r');
+const gSlider = document.getElementById('slider-g');
+const bSlider = document.getElementById('slider-b');
+
+const rValText = document.getElementById('val-r');
+const gValText = document.getElementById('val-g');
+const bValText = document.getElementById('val-b');
+
+const colorPreview = document.getElementById('color-preview');
+const hexDisplay = document.getElementById('hex-display');
+
+function updateColor() {
+    const r = rSlider.value;
+    const g = gSlider.value;
+    const b = bSlider.value;
+    
+    // Update labels
+    rValText.textContent = r;
+    gValText.textContent = g;
+    bValText.textContent = b;
+    
+    // Update preview background
+    const rgbString = `rgb(${r}, ${g}, ${b})`;
+    colorPreview.style.backgroundColor = rgbString;
+    
+    // Convert to Hex (Optional but cool)
+    const hex = "#" + [r, g, b].map(x => {
+        const h = parseInt(x).toString(16);
+        return h.length === 1 ? '0' + h : h;
+    }).join('');
+    
+    hexDisplay.textContent = hex.toUpperCase();
+}
+
+// Add listeners to all sliders
+[rSlider, gSlider, bSlider].forEach(slider => {
+    slider.addEventListener('input', updateColor);
+});
+
+// Initialize on load
+updateColor();
