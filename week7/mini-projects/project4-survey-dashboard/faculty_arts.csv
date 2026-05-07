@@ -1,0 +1,61 @@
+import csv
+
+# ── Step 1: Initialize Analysis Counters ──────────────────────────────────────
+tool_counts = {}        # tool -> frequency
+year_satisfaction = {}   # year -> [list of scores]
+total_satisfaction = 0
+responses_count = 0
+
+# ── Step 2: Read and Process the Feedback ─────────────────────────────────────
+try:
+    with open("feedback.csv", "r") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            year = row["year"]
+            tool = row["favourite_tool"]
+            score = int(row["satisfaction"])
+            
+            # Update tool popularity
+            tool_counts[tool] = tool_counts.get(tool, 0) + 1
+            
+            # Group satisfaction scores by year
+            if year not in year_satisfaction:
+                year_satisfaction[year] = []
+            year_satisfaction[year].append(score)
+            
+            # Global totals for overall average
+            total_satisfaction += score
+            responses_count += 1
+
+except FileNotFoundError:
+    print("Error: feedback.csv not found.")
+    exit(1)
+
+# ── Step 3: Print the Analysis Report ─────────────────────────────────────────
+print("\n=== CS50 Course Feedback Report ===")
+
+# Overall Average
+overall_avg = total_satisfaction / responses_count
+print(f"Overall Satisfaction: {overall_avg:.2f} / 5.0")
+
+# Tool Popularity (Most popular first)
+print("\nFavourite Tools:")
+sorted_tools = sorted(tool_counts, key=tool_counts.get, reverse=True)
+for tool in sorted_tools:
+    print(f"  - {tool:<8}: {tool_counts[tool]} students")
+
+# Average Satisfaction by Year
+print("\nSatisfaction by Year Level:")
+for year in sorted(year_satisfaction):
+    scores = year_satisfaction[year]
+    avg = sum(scores) / len(scores)
+    print(f"  Year {year}: {avg:.1f} / 5.0")
+
+# ── Step 4: Simple Sentiment Check (Optional) ─────────────────────────────────
+# Count how many comments mention "challenging" or "technical"
+print("\nQuick Sentiment Check:")
+with open("feedback.csv", "r") as file:
+    file.seek(0) # Reset to top
+    reader = csv.DictReader(file)
+    hard_count = sum(1 for row in reader if "challenging" in row["comments"].lower() or "technical" in row["comments"].lower())
+    print(f"  Number of students mentioning difficulty: {hard_count}")
